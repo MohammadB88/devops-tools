@@ -5,8 +5,8 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
 
 # Table of Content
 - [Table of Content](#table-of-content)
-  - [Prometheus and Grafana](#Prometheus and Grafana)
-  - [Jenkins](#jenkins)
+  - [Prometheus and Grafana](#Prometheus-and-Grafana)
+  - [Jenkins](#Jenkins)
   - [ArgoCD](#ArgoCd)
 
 
