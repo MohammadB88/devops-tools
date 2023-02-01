@@ -13,3 +13,12 @@ After the installation and in order to connect to the Grafana UI, its the servic
 kubectl --namespace monitoring port-forward svc/grafana HOSST_PORT:SVC_PORT  --address IP_VM 
 ```
 
+The UI for Prometheus and Alertmanager can be accessed in the same way:
+
+```
+kubectl --namespace monitoring port-forward svc/prometheus-k8s HOSST_PORT:SVC_PORT  --address IP_VM 
+```
+```
+kubectl --namespace monitoring port-forward svc/alertmanager-main HOSST_PORT:SVC_PORT  --address IP_VM 
+```
+
