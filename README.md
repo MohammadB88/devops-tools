@@ -4,10 +4,14 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
 
 
 # Table of Content
+- [devops-tools](#devops-tools)
 - [Table of Content](#table-of-content)
-  - [Prometheus and Grafana](#Prometheus-and-Grafana)
-  - [Jenkins](#Jenkins)
-  - [ArgoCD](#ArgoCd)
+  - [Prometheus and Grafana](#prometheus-and-grafana)
+  - [Jenkins](#jenkins)
+  - [JenkinsX](#jenkinsx)
+  - [CircleCI](#circleci)
+  - [ArgoCD](#argocd)
+  - [GitHub Action](#github-action)
 
 
 ## Prometheus and Grafana
@@ -35,5 +39,15 @@ One can also reach these services through a Load Balancer or change the service 
 
 ## Jenkins
 
+## JenkinsX
+
+## CircleCI
+
 ## ArgoCD
 
+## GitHub Action
+
+[Introduction to GitHub Actions - Docker](https://docs.docker.com/build/ci/github-actions/)
+[Build from Dockerfile in subdirectory](https://github.com/docker/build-push-action/issues/169)
+[Github Actions to make changes to a file](https://github.com/orgs/community/discussions/26842)
+[Build-Push-Action](https://github.com/docker/build-push-action#path-context)
