@@ -1,13 +1,16 @@
-# devops-tools
+# DevOps-Tools
 In this repository, I will gather information about the requirements and installation steps for devops tools like Prometheus, Grafana, Jenkins, ArgoCD and ....
 I will also document how to lunch and reach these services on a Kubernetes Cluster.
 
 
 # Table of Content
-- [devops-tools](#devops-tools)
+- [DevOps-Tools](#devops-tools)
 - [Table of Content](#table-of-content)
   - [**Helm**](#helm)
-  - [**Monitoring Tools**](#monitoring-tools)
+  - [**Monitoring**](#monitoring)
+    - [**Kubernetes monitoring**](#kubernetes-monitoring)
+    - [**Kubernetes APM**](#kubernetes-apm)
+    - [**Kubernetes Monitoring Tools**](#kubernetes-monitoring-tools)
     - [**Prometheus and Grafana**](#prometheus-and-grafana)
       - [**Minikube**](#minikube)
   - [**Jenkins**](#jenkins)
@@ -28,7 +31,51 @@ sudo apt-get install helm
 
 Helm Charts help to define, install, and upgrade even the most complex Kubernetes application. Charts are easy to create, version, share, and publish. For example, I will use them to install Prometheus and Grafana on my Minikube cluster, which is explained in the next section.
 
-## **Monitoring Tools**
+## **Monitoring**
+Kubernetes monitoring is a type of reporting that helps identify problems in a Kubernetes cluster and implement proactive cluster management strategies. Kubernetes cluster monitoring tracks cluster resource utilization, including storage, CPU and memory. This eases containerized infrastructure management. 
+
+### **Kubernetes monitoring**
+Find important Kubernetes monitoring metrics using the Kubernetes Metrics Server. Kubernetes Metrics Server collects and aggregates data from the kubelet on each node. Consider some of these key Kubernetes metrics:
+
+  - **API request latency**, the lower the better, measured in milliseconds
+  - **Cluster state metrics**, including the availability and health of pods
+  - **CPU utilization** in relation to per pod CPU resource allocation
+  - **Disk utilization** including lack of space for file system and index nodes
+  - **Memory utilization** at the node and pod levels
+  - **Node status**, including disk or processor overload, memory, network availability, and readiness
+  - **Pod availability** (unavailable pods may indicate poorly designed readiness probes or configuration issues)
+
+
+While *Kubernetes monitoring* focuses on the performance of the cluster itself, *Kubernetes APM* focuses on monitoring the performance of the applications running in the Kubernetes cluster, 
+
+Monitoring the Kubernetes cluster involves tracking the control plane/API server and the worker nodes. The control plane is where the Kubernetes API runs along with the cluster store (etcd), controller manager and controllers (which control the state of your cluster), and the scheduler (how and where pods run). And it’s where you’ll find the pods, including the kubelet (agent), kube-proxy (networking), DNS, and the container runtime. You also need to monitor the underlying infrastructure, which can mean two to three control planes and three to four worker nodes in production.
+
+Monitoring the application means understanding how it’s performing in a pod, which holds the containers. You need to monitor the binary running in the pod, because the pod might be running even if the application isn’t. As we stated at the outset, the problem is that Kubernetes doesn’t provide an easy way to monitor application data like it does for the rest of the cluster components.
+
+You should also monitor the resource usage of applications inside the Kubernetes cluster. Make sure to limit each application’s resources (like CPU and memory) so that one application doesn’t use up all the resources on the node and cause issues for the other applications running on the same node.
+
+### **Kubernetes APM**
+When monitoring a Kubernetes cluster, there are some key metrics to know for Kubernetes APM. Some of the key metrics your team can use to detect issues that affect application performance and user experience include:
+
+  - **Request rate:** This metric allows you to visualize the number of requests users make to the application or service per unit of time. This makes it easy to identify spikes in user traffic, which in turn helps engineers plan for resource scaling at times of high and low demand.
+  - **Response time:** This metric measures the average response time of the application. When this value exceeds a certain threshold, lags could impact the user experience, hence the importance of monitoring it.
+  - **Error rate:** This tracks how many errors occur in a certain amount of time, which makes it a useful metric for ensuring compliance with service level agreements (SLAs).
+  - Memory usage. This metric provides insight into the memory usage of the application or service. It’s useful for setting alerts and tracking application optimizations.
+  - **CPU usage:** Like memory usage, this metric allows for evaluation of the resources consumed by the application or service. You can use this information in many ways, including planning the resources needed in the cluster during peak hours and detecting higher than usual CPU usage.
+  - **Persistent storage usage:** This metric also has to do with the resources that the application needs, but from the viewpoint of permanent storage. In Kubernetes, managing persistent storage is just as important as managing CPU and memory usage, so it’s crucial to include this metric in your analyses.
+  - **Uptime:** Along with error rate, this metric is tremendously useful to keep an eye on SLAs since it allows you to calculate the percentage of time that the application remains online.
+
+### **Kubernetes Monitoring Tools**
+Kubernetes users often use open source tools that are deployed inside Kubernetes as monitoring solutions. These include Heapster/InfluxDB/Grafana and Prometheus/Grafana. It’s also possible to conduct Kubernetes monitoring with ELK Stack or a hosted solution (Heapster/ELK). Finally, proprietary APM solutions that offer Kubernetes monitoring are also on the market.
+
+Here are some of the more common tools for Kubernetes monitoring.
+
+Prometheus metrics. Prometheus is an open source system created by the Cloud Native Computing Foundation (CNCF). The Prometheus server collects data from nodes, pods, and jobs, and other Kubernetes health metrics after installing data exporter pods on each node in the cluster. It saves collected time-series data into a database, and generates alerts automatically based on preset conditions.
+
+The Prometheus dashboard is limited, but users enhance it with external visualization tools such as Grafana, which enables customized and sophisticated debugging, inquiries, and reporting using the Prometheus database. Prometheus supports importing data from many third-party databases.
+
+Kubernetes dashboard. The Kubernetes dashboard is a simple web interface for debugging containerized applications and managing cluster resources. The Kubernetes dashboard provides a rundown of all defined storage classes and all cluster namespaces, and a simple overview of resources, both on individual nodes and cluster-wide.
+
 ### **Prometheus and Grafana**
 Using Prometheus Operator, I have deployed Prometheus and Grafana to monitor different cluster metrices. This article is very detailed:
 
@@ -92,6 +139,14 @@ The secret for Grafana UI can be found by running this command:
  kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
  ````
 
+There is a [Grafana Dashboards Library](https://grafana.com/grafana/dashboards/?orderBy=name&direction=asc), which helps to build and explor Grafana capabilities as well as learn different metrices and how to work use them. Here, are the links to some of the professional looking dashboards:
+
+- [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/)
+- [1 K8S for Prometheus Dashboard](https://grafana.com/grafana/dashboards/15661-1-k8s-for-prometheus-dashboard-20211010/?tab=revisions)
+- [Kubernetes apiserver](https://grafana.com/grafana/dashboards/12006-kubernetes-apiserver/?tab=revisions)
+- [NGINX Ingress controller](https://grafana.com/grafana/dashboards/9614-nginx-ingress-controller/?tab=revisions)
+- []()
+- []()
 
 One can also reach these services through a Load Balancer or change the service types to NodePort and also store the data on a PersistentVolume. However, I will focus at the moment on the functionality of the tools and leave these explorations for later.
 
