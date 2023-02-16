@@ -18,6 +18,9 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
   - [**CircleCI**](#circleci)
   - [**ArgoCD**](#argocd)
   - [**GitHub Action**](#github-action)
+- [Infrastructure as Code (IaC)](#infrastructure-as-code-iac)
+  - [**Terraform and AWS**](#terraform-and-aws)
+  - [*Ansible*](#ansible)
 
 ## **Helm**
 *Helm* is the package manager for Kubernetes resources. It helps with managing Kubernetes applications. The installation on different operating systems is straightforward as explained in the documentation [installing Helm](https://helm.sh/docs/intro/install/). For example, this is how it can be installed on Debian/Ubuntu:
@@ -164,3 +167,19 @@ One can also reach these services through a Load Balancer or change the service 
 [Build from Dockerfile in subdirectory](https://github.com/docker/build-push-action/issues/169)
 [Github Actions to make changes to a file](https://github.com/orgs/community/discussions/26842)
 [Build-Push-Action](https://github.com/docker/build-push-action#path-context)
+
+# Infrastructure as Code (IaC)
+## **Terraform and AWS**
+Terraform is a powerful tool to create infrastructure specially on cloud providers like AWS. First step is to install *AWS CLI* and then *terraform*, which are explained in [Installing AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Install Terraform](https://developer.hashicorp.com/terraform/downloads), respectively. 
+
+The next step is to setup [*Programmatic Access Keys*](https://www.middlewareinventory.com/blog/aws-cli-ec2/#install-cli) on AWS account and import it in the *AWS Congfig Profile* on local machine using *aws configure* command.
+
+Now all are set to create an *EC2* instance with the help of *Terraform*:
+[Create EC2 instance with Terraform](https://www.middlewareinventory.com/blog/terraform-aws-example-ec2/)
+
+***AWS OFFERS AN ALTERNATIVE FOR AWS CLOUD, CALLED AWS LOCALSTACK.**
+
+Here is how to setup [AWS environment locally with AWS Localstack](https://medium.com/wearesinch/simulating-aws-environment-locally-with-aws-localstack-ad5a80413d71#:~:text=What%20is%20LocalStack%3F,the%20real%20AWS%20cloud%20environment.)
+
+## *Ansible*
+At the moment I use Ansible to install *httpd/apache2* packages and copy some web page.
