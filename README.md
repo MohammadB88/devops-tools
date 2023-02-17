@@ -22,6 +22,7 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
   - [**Terraform and AWS**](#terraform-and-aws)
     - [**AWS LocalStack**](#aws-localstack)
   - [**Ansible**](#ansible)
+  - [**Terraform and Ansible**](#terraform-and-ansible)
 
 ## **Helm**
 *Helm* is the package manager for Kubernetes resources. It helps with managing Kubernetes applications. The installation on different operating systems is straightforward as explained in the documentation [installing Helm](https://helm.sh/docs/intro/install/). For example, this is how it can be installed on Debian/Ubuntu:
@@ -259,3 +260,24 @@ Here is a link to a very nice and clear description, why this method of installa
 And the websites that pointed me to the write answer:
 [Cannot find neither ~/.ansible.cfg or etc/ansible](https://stackoverflow.com/questions/58970811/cannot-find-neither-ansible-cfg-or-etc-ansible)
 [Ansible installed via pip3, but Ansible commands not found](https://superuser.com/questions/1635257/ansible-installed-via-pip3-but-ansible-commands-not-found)
+
+## **Terraform and Ansible**
+It is a challenging task to run Ansible after Terraform provisioned the infrastructure. However, it could be performed using the provisioner *local-exec*:
+````
+provisioner "remote-exec" {
+    inline = ["echo 'Wait until SSH is ready'"]
+
+    connection {
+      type        = "ssh"
+      user        = var.ssh_user
+      private_key = file(var.private_key_path)
+      host        = aws_instance.RESOURCE_NAME.public_ip
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ${aws_instance.RESOURCE_NAME.public_ip}, --private-key ${var.private_key_path} simple_webapp.yml"
+    working_dir = "WORK_DIR"
+  }
+````
+The provisioner "remote-exec" makes sure that the created machine is reachable via *SSH*.
