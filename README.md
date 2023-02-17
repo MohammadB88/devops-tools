@@ -20,7 +20,7 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
   - [**GitHub Action**](#github-action)
 - [Infrastructure as Code (IaC)](#infrastructure-as-code-iac)
   - [**Terraform and AWS**](#terraform-and-aws)
-  - [*Ansible*](#ansible)
+  - [**Ansible**](#ansible)
 
 ## **Helm**
 *Helm* is the package manager for Kubernetes resources. It helps with managing Kubernetes applications. The installation on different operating systems is straightforward as explained in the documentation [installing Helm](https://helm.sh/docs/intro/install/). For example, this is how it can be installed on Debian/Ubuntu:
@@ -181,5 +181,10 @@ Now all are set to create an *EC2* instance with the help of *Terraform*:
 
 Here is how to setup [AWS environment locally with AWS Localstack](https://medium.com/wearesinch/simulating-aws-environment-locally-with-aws-localstack-ad5a80413d71#:~:text=What%20is%20LocalStack%3F,the%20real%20AWS%20cloud%20environment.)
 
-## *Ansible*
-At the moment I use Ansible to install *httpd/apache2* packages and copy some web page.
+## **Ansible**
+At the moment, I use Ansible to install *httpd/apache2* packages and copy some web page.
+I have installed Ansible using pip and the *venv* module. Therefore, the configuration file is not set for ansible. 
+The only remedy in a ***WSL Environment*** is to use `export ANSIBLE_CONFIG=./ansible.cfg` to set the correct ansible configuration file in the current *shell*. 
+
+Here is a link to a very nice and clear description, why this method of installation on *WSL* would not work simply:
+[Avoiding security risks with ansible.cfg in the current directory](https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir)
