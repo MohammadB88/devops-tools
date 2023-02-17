@@ -1,11 +1,11 @@
-# DevOps-Tools
+# **DevOps-Tools**
 In this repository, I will gather information about the requirements and installation steps for devops tools like Prometheus, Grafana, Jenkins, ArgoCD and ....
 I will also document how to lunch and reach these services on a Kubernetes Cluster.
 
 
-# Table of Content
-- [DevOps-Tools](#devops-tools)
-- [Table of Content](#table-of-content)
+# **Table of Content**
+- [**DevOps-Tools**](#devops-tools)
+- [**Table of Content**](#table-of-content)
   - [**Helm**](#helm)
   - [**Monitoring**](#monitoring)
     - [**Kubernetes monitoring**](#kubernetes-monitoring)
@@ -18,8 +18,9 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
   - [**CircleCI**](#circleci)
   - [**ArgoCD**](#argocd)
   - [**GitHub Action**](#github-action)
-- [Infrastructure as Code (IaC)](#infrastructure-as-code-iac)
+- [**Infrastructure as Code (IaC)**](#infrastructure-as-code-iac)
   - [**Terraform and AWS**](#terraform-and-aws)
+    - [**AWS LocalStack**](#aws-localstack)
   - [**Ansible**](#ansible)
 
 ## **Helm**
@@ -168,23 +169,93 @@ One can also reach these services through a Load Balancer or change the service 
 [Github Actions to make changes to a file](https://github.com/orgs/community/discussions/26842)
 [Build-Push-Action](https://github.com/docker/build-push-action#path-context)
 
-# Infrastructure as Code (IaC)
-## **Terraform and AWS**
-Terraform is a powerful tool to create infrastructure specially on cloud providers like AWS. First step is to install *AWS CLI* and then *terraform*, which are explained in [Installing AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Install Terraform](https://developer.hashicorp.com/terraform/downloads), respectively. 
+# **Infrastructure as Code (IaC)**
+Infrastructure as Code (IaC) is the practice of managing and provisioning infrastructure using code instead of manual processes. With IaC, you can define and automate the configuration, deployment, and maintenance of your infrastructure as a set of declarative code that can be version-controlled, tested, and shared.
 
-The next step is to setup [*Programmatic Access Keys*](https://www.middlewareinventory.com/blog/aws-cli-ec2/#install-cli) on AWS account and import it in the *AWS Congfig Profile* on local machine using *aws configure* command.
+IaC provides several benefits, including:
+
+  1. **Consistency and repeatability:** By using code to define your infrastructure, you can ensure that all instances of your infrastructure are identical, reducing the risk of human error and increasing the reliability of your infrastructure.
+
+  2. **Efficiency and speed:** With IaC, you can provision infrastructure much faster and with less effort than manual processes. Changes can be made quickly and reliably, reducing the time to deploy and increasing agility.
+
+  3. **Scalability:** IaC allows you to easily scale your infrastructure up or down based on demand. You can define your infrastructure as a set of templates or modules that can be reused and adapted to different environments.
+
+  4. **Collaboration and sharing:** With IaC, infrastructure is defined as code that can be shared, reviewed, and version-controlled like any other code. This makes it easy for teams to collaborate on infrastructure development and maintenance.
+
+In summary, IaC can improve the consistency, reliability, efficiency, and agility of your infrastructure management, and is particularly useful in modern, cloud-based environments where infrastructure is frequently updated and scaled.
+## **Terraform and AWS**
+Terraform is a powerful open-source IaC tool that enables you to create, manage and provision infrastructure resources across multiple cloud providers or on-premises data centers, using a declarative language. Terraform helps you to manage infrastructure in a consistent and repeatable way, with a version-controlled configuration.
+
+With Terraform, you can create infrastructure resources such as virtual machines, networks, storage, and services, on cloud platforms such as Amazon Web Services, Microsoft Azure, Google Cloud Platform, and many others. Terraform provides a consistent and unified way to manage infrastructure resources, regardless of the underlying cloud provider or technology.
+
+One of the main benefits of Terraform is that it enables you to define your infrastructure as code, which makes it easy to version-control and collaborate on infrastructure changes. Additionally, Terraform enables you to apply, destroy, and update infrastructure resources in a safe and repeatable way, minimizing the risk of human error.
+
+First step is to install *AWS CLI* and then *terraform*, which are explained in [Installing AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Install Terraform](https://developer.hashicorp.com/terraform/downloads), respectively. 
+
+Then, setup [*Programmatic Access Keys*](https://www.middlewareinventory.com/blog/aws-cli-ec2/#install-cli) on AWS account and import it in the *AWS Congfig Profile* on local machine using *aws configure* command.
 
 Now all are set to create an *EC2* instance with the help of *Terraform*:
 [Create EC2 instance with Terraform](https://www.middlewareinventory.com/blog/terraform-aws-example-ec2/)
 
-***AWS OFFERS AN ALTERNATIVE FOR AWS CLOUD, CALLED AWS LOCALSTACK.**
+**AWS OFFERS AN ALTERNATIVE FOR AWS CLOUD, CALLED AWS LOCALSTACK.**
+### **AWS LocalStack**
+AWS LocalStack is an open-source tool that provides a fully functional local AWS cloud stack for testing and developing cloud applications offline. LocalStack is designed to replicate the behavior of the Amazon Web Services (AWS) cloud services API, allowing developers to test and develop their applications locally before deploying to the cloud.
+
+With LocalStack, you can simulate a wide range of AWS cloud services, such as *AWS Lambda*, *Amazon S3*, *Amazon DynamoDB*, *Amazon SQS*, and more. This enables developers to test and develop cloud applications locally, without incurring the cost and latency of cloud resources.
+
+LocalStack provides a simple and easy-to-use interface, which enables developers to test and deploy their applications quickly and efficiently. Additionally, LocalStack supports a wide range of programming languages and frameworks, making it accessible to developers from different backgrounds.
+
+One of the main benefits of LocalStack is that it enables developers to test and develop their applications offline, which can reduce the cost and time associated with cloud development. With LocalStack, developers can test and refine their applications until they are ready for deployment, ensuring that their applications are robust and reliable.
 
 Here is how to setup [AWS environment locally with AWS Localstack](https://medium.com/wearesinch/simulating-aws-environment-locally-with-aws-localstack-ad5a80413d71#:~:text=What%20is%20LocalStack%3F,the%20real%20AWS%20cloud%20environment.)
 
 ## **Ansible**
+Ansible is an open-source configuration management tool that automates software provisioning, configuration management, and application deployment. With Ansible, you can easily manage and configure infrastructure and applications across multiple servers, cloud platforms, and network devices, using a simple, human-readable language.
+
+Ansible provides a simple and powerful way to automate complex IT tasks, allowing you to manage infrastructure and deploy applications faster, more consistently, and with less effort. With Ansible, you can define infrastructure and application configurations as code, which makes it easy to version-control, test, and reuse configurations.
+
+One of the main benefits of Ansible is its simplicity and ease of use. Ansible uses a simple syntax (yaml) and does not require any specialized coding skills, making it accessible to both developers and system administrators. Additionally, Ansible is agentless, meaning that it does not require any software to be installed on the target servers or devices, which makes it easy to manage large-scale infrastructure.
+
 At the moment, I use Ansible to install *httpd/apache2* packages and copy some web page.
-I have installed Ansible using pip and the *venv* module. Therefore, the configuration file is not set for ansible. 
+
+Ansible can be installed using python modules like *pip* and *venv*:
+
+1. **Install Python and pip:** Ansible is written in Python, so you'll need to install Python and pip first. You can download and install the latest version of Python from the official Python website](https://www.python.org/downloads/) and pip should be included with your Python installation.
+
+2. Create a virtual environment using venv: A virtual environment is a self-contained directory that contains a Python installation and other dependencies. It's a best practice to use a virtual environment when installing Ansible, to ensure that the required dependencies are isolated from your system Python. To create a virtual environment, open a terminal or command prompt and type:
+  ````
+  python3 -m venv ansible-venv
+  ````
+This will create a new virtual environment called "ansible-venv" in the current directory.
+
+3. Activate the virtual environment: To activate the virtual environment, type:
+  ````
+  source ansible-venv/bin/activate
+  ````
+This will activate the virtual environment and modify your shell prompt to show the name of the virtual environment.
+
+4. Install Ansible using pip: Now that the virtual environment is activated, you can use pip to install Ansible. To install the latest version of Ansible, type:
+  ````
+  pip install ansible
+  ````
+This will download and install the latest version of Ansible and any required dependencies.
+
+5. Verify the installation: To verify that Ansible was installed correctly, type:
+  ````
+  ansible --version
+  ````
+
+6. Deactivate the virtual environment: To deactivate the virtual environment, type:
+  ````
+  deactivate
+  ````
+This will return your shell to the original state, without the virtual environment active.
+
+Since I have installed Ansible using pip and the *venv* module, the configuration file is not set for ansible. 
 The only remedy in a ***WSL Environment*** is to use `export ANSIBLE_CONFIG=./ansible.cfg` to set the correct ansible configuration file in the current *shell*. 
 
 Here is a link to a very nice and clear description, why this method of installation on *WSL* would not work simply:
 [Avoiding security risks with ansible.cfg in the current directory](https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir)
+And the websites that pointed me to the write answer:
+[Cannot find neither ~/.ansible.cfg or etc/ansible](https://stackoverflow.com/questions/58970811/cannot-find-neither-ansible-cfg-or-etc-ansible)
+[Ansible installed via pip3, but Ansible commands not found](https://superuser.com/questions/1635257/ansible-installed-via-pip3-but-ansible-commands-not-found)
