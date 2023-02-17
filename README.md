@@ -281,3 +281,4 @@ provisioner "remote-exec" {
   }
 ````
 The provisioner "remote-exec" makes sure that the created machine is reachable via *SSH*.
+It is very well explained in this video [Terraform Ansible Integration | Terraform Ansible AWS Example](https://www.youtube.com/watch?v=QxgJlJgGA0E&t=353s).
