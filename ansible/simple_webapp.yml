@@ -1,0 +1,31 @@
+---
+- name: Install and configure a simple webapp
+  hosts: all
+
+  tasks:
+    - name: test ansible connection
+      ansible.builtin.command: cat /etc/os-release
+      register: output
+
+    - name: print out the test result
+      debug:
+        var: output.stdout
+
+    - name: install required packages
+      yum:
+        name: httpd
+        state: latest
+
+    - name: start and enable httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: copy the website content
+      ansible.builtin.copy:
+        content: "Hello from Ansible"
+        dest: "/var/www/html/index.html"
+
+
+
