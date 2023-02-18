@@ -193,7 +193,7 @@ One of the main benefits of Terraform is that it enables you to define your infr
 
 First step is to install *AWS CLI* and then *terraform*, which are explained in [Installing AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Install Terraform](https://developer.hashicorp.com/terraform/downloads), respectively. 
 
-Then, setup [*Programmatic Access Keys*](https://www.middlewareinventory.com/blog/aws-cli-ec2/#install-cli) on AWS account and import it in the *AWS Congfig Profile* on local machine using *aws configure* command.
+Then, create a user (e.g. *EC2Terraform*) and setup [*Programmatic Access Keys*](https://www.middlewareinventory.com/blog/aws-cli-ec2/#install-cli) on AWS account and import it in the *AWS Congfig Profile* on local machine using *aws configure* command.
 
 Now all are set to create an *EC2* instance with the help of *Terraform*:
 [Create EC2 instance with Terraform](https://www.middlewareinventory.com/blog/terraform-aws-example-ec2/)
