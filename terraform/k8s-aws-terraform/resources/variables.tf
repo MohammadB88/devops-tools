@@ -1,6 +1,24 @@
-variable "awsprops" {
+# Variables that are used in the resource creation module will be put here.
+variable "iam_role_name" {
+  type = string
+  default = "K8sIamRole"
+}
+
+variable "instance_profile_name" {
+  type    = string
+  default = "K8sInstanceProfile"
+}
+
+variable "environment" {
+  type = string
+  default = "TEST"
+}
+
+variable "ec2_instances" {
     type = map
     default = {
+    instance_count = 2
+    prefix = "k8s_server"
     region = "eu-central-1"
     vpc = "vpc-024868b339a6580c4"
     ami = "ami-0c0d3776ef525d5dd"

@@ -4,6 +4,7 @@ resource "aws_iam_instance_profile" "k8s_instance_profile" {
 
   tags = {
       Name = "k8s-instance-pofile-${var.environment}"
+      Managed = "IAC"
     }
 
 }
@@ -27,6 +28,7 @@ resource "aws_iam_role" "k8s_iam_role" {
 
   tags = {
       Name = "k8s-iam-role-${var.environment}"
+      Managed = "IAC"
     }
 
 }
