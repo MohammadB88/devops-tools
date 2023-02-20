@@ -1,0 +1,20 @@
+---
+- name: install and configure controlplane servers
+  hosts: controlplanes
+
+  tasks:
+  - name: import the playbook to install dependencies
+    ansible.builtin.import_tasks: install_dependencies.yml
+
+  - name: import the playbook to disable swap
+    ansible.builtin.import_tasks: disable_swap.yml
+
+  - name: import the playbook to install kubelet, kubeadm, and kubectl
+    ansible.builtin.import_tasks: install_kubelet_kubeadm_kubectl.yml
+
+  - name: import the playbook to initiate and configure the Kubernetes
+    ansible.builtin.import_tasks: initiate_config_kubernetes.yml
+  
+  handlers:
+    - name: docker status
+      service: name=docker state=started
