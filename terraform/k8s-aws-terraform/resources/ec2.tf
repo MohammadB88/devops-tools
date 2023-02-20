@@ -15,7 +15,7 @@ resource "aws_instance" "k8s_server" {
     Name = "k8s-ec2-${count.index + 1}"
     Managed = "IAC"
   }
-
+  
   depends_on = [ aws_security_group.k8s-sg, aws_key_pair.terraform-demo ]
 }
 
