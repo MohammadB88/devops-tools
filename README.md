@@ -8,14 +8,16 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
 - [**Table of Content**](#table-of-content)
   - [**Helm**](#helm)
   - [**Monitoring**](#monitoring)
-    - [**Kubernetes monitoring**](#kubernetes-monitoring)
+    - [**Kubernetes Metrics Server**](#kubernetes-metrics-server)
     - [**Kubernetes APM**](#kubernetes-apm)
     - [**Kubernetes Monitoring Tools**](#kubernetes-monitoring-tools)
-    - [**Prometheus and Grafana**](#prometheus-and-grafana)
-      - [**Minikube**](#minikube)
+      - [**Prometheus and Grafana**](#prometheus-and-grafana)
+      - [**Kubernetes Dashboard**](#kubernetes-dashboard)
+    - [**Minikube**](#minikube)
   - [**Jenkins**](#jenkins)
   - [**JenkinsX**](#jenkinsx)
   - [**CircleCI**](#circleci)
+  - [**Flux**](#flux)
   - [**ArgoCD**](#argocd)
   - [**GitHub Action**](#github-action)
 - [**Infrastructure as Code (IaC)**](#infrastructure-as-code-iac)
@@ -25,7 +27,9 @@ I will also document how to lunch and reach these services on a Kubernetes Clust
   - [**Terraform and Ansible**](#terraform-and-ansible)
 
 ## **Helm**
-*Helm* is the package manager for Kubernetes resources. It helps with managing Kubernetes applications. The installation on different operating systems is straightforward as explained in the documentation [installing Helm](https://helm.sh/docs/intro/install/). For example, this is how it can be installed on Debian/Ubuntu:
+Helm is a package manager for Kubernetes that allows you to easily deploy, manage, and update complex applications using templates called "charts". Helm charts are a convenient way to package and deploy all the necessary Kubernetes resources for an application in a single, versioned package.
+
+The installation on different operating systems is straightforward as explained in the documentation [installing Helm](https://helm.sh/docs/intro/install/). For example, this is how it can be installed on Debian/Ubuntu:
 ```
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
 sudo apt-get install apt-transport-https --yes
@@ -34,13 +38,27 @@ sudo apt-get update
 sudo apt-get install helm
 ```
 
-Helm Charts help to define, install, and upgrade even the most complex Kubernetes application. Charts are easy to create, version, share, and publish. For example, I will use them to install Prometheus and Grafana on my Minikube cluster, which is explained in the next section.
+Using Helm charts has several benefits:
+
+  - **Simplifies deployment:** Helm charts provide an easy-to-use packaging format for Kubernetes resources, making it easier to deploy and manage complex applications. You can use pre-built charts for common applications and customize them to fit your needs, or create your own charts for your own applications.
+
+  - **Promotes reusability:** Helm charts are designed to be easily shared and reused, which can help you save time and effort by allowing you to leverage existing charts for common applications or infrastructure components.
+
+  - **Enables version control:** Helm charts allow you to version your application releases, making it easy to roll back to a previous version if needed.
+
+  - **Facilitates upgrades and rollback:** Helm allows you to easily upgrade or rollback your application by installing or rolling back to a previous version of a chart.
+
+  - **Simplifies configuration management:** Helm charts allow you to parameterize your Kubernetes resources, making it easy to manage multiple environments or configurations from a single chart.
+
+Helm Charts are easy to create, version, share, and publish. For example, I will use them to install Prometheus and Grafana on my Minikube cluster, which is explained in the next section.
+
+
 
 ## **Monitoring**
 Kubernetes monitoring is a type of reporting that helps identify problems in a Kubernetes cluster and implement proactive cluster management strategies. Kubernetes cluster monitoring tracks cluster resource utilization, including storage, CPU and memory. This eases containerized infrastructure management. 
 
-### **Kubernetes monitoring**
-Find important Kubernetes monitoring metrics using the Kubernetes Metrics Server. Kubernetes Metrics Server collects and aggregates data from the kubelet on each node. Consider some of these key Kubernetes metrics:
+### **Kubernetes Metrics Server**
+Find important Kubernetes monitoring metrics using the *Kubernetes Metrics Server*. It collects and aggregates data from the kubelet on each node. Consider some of these key Kubernetes metrics:
 
   - **API request latency**, the lower the better, measured in milliseconds
   - **Cluster state metrics**, including the availability and health of pods
@@ -75,13 +93,13 @@ Kubernetes users often use open source tools that are deployed inside Kubernetes
 
 Here are some of the more common tools for Kubernetes monitoring.
 
-Prometheus metrics. Prometheus is an open source system created by the Cloud Native Computing Foundation (CNCF). The Prometheus server collects data from nodes, pods, and jobs, and other Kubernetes health metrics after installing data exporter pods on each node in the cluster. It saves collected time-series data into a database, and generates alerts automatically based on preset conditions.
+**Prometheus metrics:** Prometheus is an open source system created by the Cloud Native Computing Foundation (CNCF). The Prometheus server collects data from nodes, pods, and jobs, and other Kubernetes health metrics after installing data exporter pods on each node in the cluster. It saves collected time-series data into a database, and generates alerts automatically based on preset conditions.
 
 The Prometheus dashboard is limited, but users enhance it with external visualization tools such as Grafana, which enables customized and sophisticated debugging, inquiries, and reporting using the Prometheus database. Prometheus supports importing data from many third-party databases.
 
-Kubernetes dashboard. The Kubernetes dashboard is a simple web interface for debugging containerized applications and managing cluster resources. The Kubernetes dashboard provides a rundown of all defined storage classes and all cluster namespaces, and a simple overview of resources, both on individual nodes and cluster-wide.
+**Kubernetes dashboard:** The Kubernetes dashboard is a simple web interface for debugging containerized applications and managing cluster resources. The Kubernetes dashboard provides a rundown of all defined storage classes and all cluster namespaces, and a simple overview of resources, both on individual nodes and cluster-wide.
 
-### **Prometheus and Grafana**
+#### **Prometheus and Grafana**
 Using Prometheus Operator, I have deployed Prometheus and Grafana to monitor different cluster metrices. This article is very detailed:
 
 https://computingforgeeks.com/setup-prometheus-and-grafana-on-kubernetes/
@@ -102,7 +120,24 @@ kubectl --namespace monitoring port-forward svc/prometheus-k8s HOSST_PORT:SVC_PO
 kubectl --namespace monitoring port-forward svc/alertmanager-main HOSST_PORT:SVC_PORT  --address IP_VM 
 ```
 
-#### **Minikube**
+#### **Kubernetes Dashboard**
+
+
+Install the **kubernetes dashboard** using:
+````
+wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
+kubectl apply -f recommended.yaml
+````
+
+It could be uninstalled as:
+````
+kubectl delete -f recommended.yaml
+
+````
+
+
+### **Minikube**
 This method did not work out for an installation on Minikube. Hence, I have used helm, as explained in [Install Prometheus and Grafana in Minikube Using Helm](https://iamprabinav.in/install-prmotheus-and-grafana-in-minikube-using-helm/), to install and prepare the Prometheus and Grafana solutions.
 
 First, add the Prometheus and Grafana charts should be added to the helm repo and update it:
@@ -155,15 +190,69 @@ There is a [Grafana Dashboards Library](https://grafana.com/grafana/dashboards/?
 
 One can also reach these services through a Load Balancer or change the service types to NodePort and also store the data on a PersistentVolume. However, I will focus at the moment on the functionality of the tools and leave these explorations for later.
 
+And they could be removed using helm *uninstall* command:
+````
+helm uninstall prometheus --namespace NAMESPACE
+
+helm uninstall grafana --namespace NAMESPACE
+````
+
 ## **Jenkins**
 
 ## **JenkinsX**
 
 ## **CircleCI**
 
+## **Flux**
+
 ## **ArgoCD**
+**ArgoCD** is a popular open-source continuous delivery tool that helps automate deployment and management of applications in Kubernetes clusters. It uses a GitOps approach to manage application deployments and allows users to deploy applications and environments consistently across multiple clusters.
+
+With ArgoCD, you can define your application deployments and configurations as code and store them in a Git repository. ArgoCD continuously monitors the repository for changes and automatically applies those changes to your Kubernetes cluster, ensuring that your application is always in sync with the configuration defined in the repository. This approach provides several benefits for DevOps teams:
+
+  1. **Consistency:** With ArgoCD, you can ensure that your application is deployed consistently across all environments, reducing the risk of configuration drift and making it easier to manage and troubleshoot deployments.
+
+  2. **Automation:** ArgoCD automates the deployment process, reducing the time and effort required to deploy new versions of your application or update configurations.
+
+  3. **Visibility:** ArgoCD provides real-time visibility into the status of your application deployments and configurations, making it easier to identify and resolve issues.
+
+  4. **Scalability:** With ArgoCD, you can deploy applications and configurations consistently across multiple clusters, making it easier to manage large-scale Kubernetes deployments.
+
+
+ArgoCD could be installed as follows:
+````
+wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl create namespace argocd
+
+kubectl apply -n argocd -f install.yaml
+````
+
+Uninstallation is as easy as installation:
+````
+kubectl delete -n argocd -f install.yaml
+
+kubectl delete namespaces argocd
+````
+
 
 ## **GitHub Action**
+**GitHub Actions** is a powerful continuous integration and continuous deployment (CI/CD) platform provided by GitHub, a popular web-based Git repository hosting service. It helps automate various tasks throughout the software development lifecycle, including building, testing, and deploying code, and provides a customizable workflow to suit different development and deployment needs.
+
+With GitHub Actions, developers can define workflows in the form of YAML files that specify various tasks and conditions that need to be executed based on certain events. These workflows can be triggered automatically or manually, allowing developers to set up automated tests, builds, and deployments for their projects.
+
+GitHub Actions provides many benefits for DevOps teams, including:
+
+  1. **Simplified workflows:** GitHub Actions offers a simple and customizable workflow that can be used to define automated tasks and integrate with third-party tools, simplifying and streamlining the development and deployment process.
+
+  2. **Integration with GitHub:** GitHub Actions integrates seamlessly with GitHub repositories, making it easy to set up and maintain CI/CD pipelines for projects hosted on the platform.
+
+  3. **Wide range of supported actions:** GitHub Actions provides a vast collection of pre-built actions, allowing developers to easily incorporate popular tools and services into their workflows without having to write custom scripts.
+
+  4. **Cost-effective:** GitHub Actions provides a generous amount of free build minutes and storage, making it a cost-effective solution for small to medium-sized projects.
+
+  5. **Community support:** GitHub Actions has a large and active community of users who share their workflows and contribute to the development of new features and integrations.
+
 
 [Introduction to GitHub Actions - Docker](https://docs.docker.com/build/ci/github-actions/)
 [Build from Dockerfile in subdirectory](https://github.com/docker/build-push-action/issues/169)
