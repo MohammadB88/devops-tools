@@ -18,3 +18,9 @@
   handlers:
     - name: docker status
       service: name=docker state=started
+
+    - name: containerd status
+      service: name=containerd state=restarted
+
+    - name: sysctl system
+      command: "sysctl --system"

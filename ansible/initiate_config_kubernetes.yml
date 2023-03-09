@@ -1,18 +1,38 @@
 ---
   - name: Initialize the Kubernetes cluster using kubeadm
-    command: kubeadm init --apiserver-cert-extra-sans="controlplane" --node-name k8s-controlplane --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=ALL
+    command: kubeadm init --apiserver-advertise-address="172.51.1.106" --apiserver-cert-extra-sans="172.51.1.106" --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=ALL
     # command: kubeadm init --apiserver-advertise-address="192.168.50.10" --apiserver-cert-extra-sans="192.168.50.10"  --node-name k8s-master --pod-network-cidr=192.168.0.0/16
 
-  - name: Setup kubeconfig for vagrant user
-    command: "{{ item }}"
-    with_items:
-     - mkdir -p /home/vagrant/.kube
-     - cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
-     - chown vagrant:vagrant /home/vagrant/.kube/config
+  # - name: Initialize cluster
+  #     kubeadm:
+  #       init:
+  #         pod_network_cidr: 10.244.0.0/16
 
-  - name: Install calico pod network
-    become: false
-    command: kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+  - name: Create .kube directory
+    file:
+      path: $HOME/.kube
+      state: directory
+      mode: 0755
+  
+  - name: Copy admin.conf to user's kube config
+    copy:
+      src: /etc/kubernetes/admin.conf
+      dest: /home/kube/.kube/config
+      owner: root
+
+  # - name: Setup kubeconfig for ubuntu user
+  #   command: "{{ item }}"
+  #   with_items:
+  #    - mkdir -p $HOME/.kube
+  #    - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    #  - chown ${/usr/bin/id -u}:$(/usr/bin/id -g) $HOME/.kube/config
+
+  # - name: Install calico pod network
+  #   become: false
+  #   command: kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+
+  - name: Install flannel pod network
+    command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
   - name: Generate join command
     command: kubeadm token create --print-join-command

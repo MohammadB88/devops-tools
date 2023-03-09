@@ -14,10 +14,10 @@
     apt: 
       name: "{{ packages }}"
       state: present
-      update_cache: yes
+      update_cache: yes # Run the equivalent of "apt-get update" before the operation.
     vars:
       packages:
-        - kubelet 
+        - kubelet
         - kubeadm 
         - kubectl
 
@@ -25,6 +25,16 @@
   #   lineinfile:
   #     path: /etc/default/kubelet
   #     line: KUBELET_EXTRA_ARGS=--node-ip={{ --node-name }}
+
+  - name: Directory exists - /var/lib/kubelet
+    ansible.builtin.file:
+      path: "/var/lib/kubelet"
+      state: directory
+
+  - name: Set Systemd as Cgroups for Kubelet
+    ansible.builtin.copy:
+      dest: "/var/lib/kubelet/config.yaml"
+      content: "kind: KubeletConfiguration \napiVersion: kubelet.config.k8s.io/v1beta1 \ncgroupDriver: systemd"
 
   - name: Restart kubelet
     service:
