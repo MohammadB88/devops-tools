@@ -2,11 +2,16 @@
   - name: Initialize the Kubernetes cluster using kubeadm
     command: kubeadm init --apiserver-advertise-address="172.51.1.106" --apiserver-cert-extra-sans="172.51.1.106" --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=ALL
     # command: kubeadm init --apiserver-advertise-address="192.168.50.10" --apiserver-cert-extra-sans="192.168.50.10"  --node-name k8s-master --pod-network-cidr=192.168.0.0/16
+    register: kubeadm_output
 
   # - name: Initialize cluster
   #     kubeadm:
   #       init:
   #         pod_network_cidr: 10.244.0.0/16
+
+  - name: print out the output of kubeadm
+    debug:
+      msg: "{{ kubeadm_output.stdout }}"
 
   - name: Create .kube directory
     file:

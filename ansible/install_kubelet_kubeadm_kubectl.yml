@@ -32,9 +32,12 @@
       state: directory
 
   - name: Set Systemd as Cgroups for Kubelet
-    ansible.builtin.copy:
-      dest: "/var/lib/kubelet/config.yaml"
-      content: "kind: KubeletConfiguration \napiVersion: kubelet.config.k8s.io/v1beta1 \ncgroupDriver: systemd"
+    ansible.builtin.blockinfile:
+      path: "/var/lib/kubelet/config.yaml"
+      block: | 
+            kind: KubeletConfiguration 
+            apiVersion: kubelet.config.k8s.io/v1beta1 
+            cgroupDriver: systemd
 
   - name: Restart kubelet
     service:
