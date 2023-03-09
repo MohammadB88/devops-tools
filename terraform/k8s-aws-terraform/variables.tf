@@ -7,7 +7,7 @@ variable "awsprops" {
     itype = "t2.micro"
     subnet = "subnet-0a421c7ba75aef2fd"
     publicip = true
-    secgroupname = "IAC-Sec-Group"
+    # secgroupname = "IAC-Sec-Group"
   }
 }
 

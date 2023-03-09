@@ -17,16 +17,17 @@ variable "environment" {
 variable "ec2_instances" {
     type = map
     default = {
-    instance_count = 2
+    # instance_count = 2
     prefix = "k8s_server"
     region = "eu-central-1"
-    vpc = "vpc-024868b339a6580c4"
+    # vpc = "${ aws_vpc.kubernetes.id }"
+    # vpc = "vpc-024868b339a6580c4"
     # ami = "ami-0c0d3776ef525d5dd" # AWS ami
     ami = "ami-0d1ddd83282187d18" # Ubuntu  22.04 ami
     itype = "t2.micro"
     subnet = "subnet-0a421c7ba75aef2fd"
     publicip = true
-    secgroupname = "IAC-Sec-Group"
+    # secgroupname = "IAC-Sec-Group"
   }
 }
 
