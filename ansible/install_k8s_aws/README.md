@@ -8,6 +8,7 @@ In order to set *systemd* distributor in containerd CRI, these lines should be a
 ````
 
 and restart both *containerd* and *kubelet* services.
+
 It is explained in [desc = unknown service runtime.v1alpha2.RuntimeService](https://serverfault.com/questions/1074008/containerd-1-4-9-unimplemented-desc-unknown-service-runtime-v1alpha2-runtimese).
 
 Besides, one has to make sure that the *kubelet* service also uses the *systemd* distributor by defining **KubeletConfiguration** in file "/var/lib/kubelet/config.yaml" as:
@@ -16,5 +17,7 @@ kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
 cgroupDriver: systemd
 ````
+
+It is explained in [Configuring a cgroup driver](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/)
 
 ***HOWEVER, the default distributor for kubelet should be systemd which makes this step reduntant***
