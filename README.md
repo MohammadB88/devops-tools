@@ -228,6 +228,11 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f install.yaml
 ````
 
+The initial password can be recovered using:
+````
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+````
+
 Uninstallation is as easy as installation:
 ````
 kubectl delete -n argocd -f install.yaml
@@ -300,6 +305,10 @@ One of the main benefits of LocalStack is that it enables developers to test and
 Here is how to setup [AWS environment locally with AWS Localstack](https://medium.com/wearesinch/simulating-aws-environment-locally-with-aws-localstack-ad5a80413d71#:~:text=What%20is%20LocalStack%3F,the%20real%20AWS%20cloud%20environment.)
 
 ## **Ansible**
+***Avoiding security risks with ansible.cfg in the current directory***
+**
+***https://docs.ansible.com/ansible/devel/reference_appendices/config.html#cfg-in-world-writable-dir***
+
 Ansible is an open-source configuration management tool that automates software provisioning, configuration management, and application deployment. With Ansible, you can easily manage and configure infrastructure and applications across multiple servers, cloud platforms, and network devices, using a simple, human-readable language.
 
 Ansible provides a simple and powerful way to automate complex IT tasks, allowing you to manage infrastructure and deploy applications faster, more consistently, and with less effort. With Ansible, you can define infrastructure and application configurations as code, which makes it easy to version-control, test, and reuse configurations.
