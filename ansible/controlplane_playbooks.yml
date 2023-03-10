@@ -17,10 +17,19 @@
   
   handlers:
     - name: docker status
-      service: name=docker state=started
+      service: 
+        name: docker 
+        state: started
 
     - name: containerd status
-      service: name=containerd state=restarted
+      service: 
+        name: containerd.io
+        state: restarted
+
+    - name: kubelet status
+      service: 
+        name: kubelet
+        state: restarted
 
     - name: sysctl system
       command: "sysctl --system"

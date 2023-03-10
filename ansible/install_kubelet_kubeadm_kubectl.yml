@@ -31,6 +31,11 @@
       path: "/var/lib/kubelet"
       state: directory
 
+  - name: File exists - Set Systemd as Cgroups for Kubelet
+    ansible.builtin.file:
+      path: "/var/lib/kubelet/config.yaml"
+      state: touch
+
   - name: Set Systemd as Cgroups for Kubelet
     ansible.builtin.blockinfile:
       path: "/var/lib/kubelet/config.yaml"
@@ -38,9 +43,16 @@
             kind: KubeletConfiguration 
             apiVersion: kubelet.config.k8s.io/v1beta1 
             cgroupDriver: systemd
+    # notify:
+    #   - containerd status
+    #   - kubelet status
+  
+  - name: containerd status
+    service: 
+      name: containerd
+      state: restarted
 
-  - name: Restart kubelet
-    service:
+  - name: kubelet status
+    service: 
       name: kubelet
-      daemon_reload: yes
       state: restarted
