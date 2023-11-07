@@ -8,31 +8,31 @@ resource "aws_instance" "project-iac" {
   vpc_security_group_ids = [ aws_security_group.project-iac-sg.id ]
 
   tags = {
-    Name ="SERVER01"
+    Name ="SERVER01_chatgpt"
     Environment = "DEV"
     OS = "UBUNTU"
     Managed = "IAC"
   }
 
-  provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is ready'"]
+  # provisioner "remote-exec" {
+  #   inline = ["echo 'Wait until SSH is ready'"]
 
-    connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      private_key = file(var.private_key_path)
-      host        = aws_instance.project-iac.public_ip
-    }
-  }
+  #   connection {
+  #     type        = "ssh"
+  #     user        = var.ssh_user
+  #     private_key = file(var.private_key_path)
+  #     host        = aws_instance.project-iac.public_ip
+  #   }
+  # }
 
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ${aws_instance.project-iac.public_ip}, --private-key ${var.private_key_path} simple_webapp.yml"
-    working_dir = "../../ansible"
+  # provisioner "local-exec" {
+  #   command = "ansible-playbook -i ${aws_instance.project-iac.public_ip}, --private-key ${var.private_key_path} simple_webapp.yml"
+  #   working_dir = "../../ansible"
 
-    environment = {
-      TF_LOG_PATH = "output.txt"
-    }
-  }
+  #   environment = {
+  #     TF_LOG_PATH = "output.txt"
+  #   }
+  # }
 
   depends_on = [ aws_security_group.project-iac-sg, aws_key_pair.terraform-demo ]
 }

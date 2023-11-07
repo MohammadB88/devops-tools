@@ -3,7 +3,8 @@ variable "awsprops" {
     default = {
     region = "eu-central-1"
     vpc = "vpc-024868b339a6580c4"
-    ami = "ami-0c0d3776ef525d5dd"
+    ami= "ami-0d1ddd83282187d18"
+    # ami = "ami-0c0d3776ef525d5dd"
     itype = "t2.micro"
     subnet = "subnet-0a421c7ba75aef2fd"
     publicip = true
@@ -24,5 +25,6 @@ variable "private_key_path" {
 
 variable "ssh_user" {
   description = "SSH user name to connect to your instance."
-  default     = "ec2-user"
+  default = "ubuntu"
+  # default     = "ec2-user"
 }
